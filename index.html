@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./stylesheet.css" />
+    <title>Etch a Sketch</title>
+    <style></style>
+  </head>
+  <body>
+    <h1>Etch a Sketch</h1>
+    <div class="container"></div>
+    <button onclick="askPrompt()">Create New Grid Resolution</button>
+    <script>
+      const container = document.querySelector(".container");
+      let idCount = 1;
+      let x = 100;
+      let hoverDiv = "";
+
+      // CREATE NEW GRID RESOLUTION
+      function askPrompt() {
+        let initPrompt = prompt(
+          "Enter new grid size number (Max size = 100)",
+          "16"
+        );
+        console.log(initPrompt);
+        if (initPrompt < 0 || initPrompt > 100) {
+          alert("Please enter a number between 0 and 100");
+        } else {
+          x = initPrompt * 1;
+          container.innerHTML = "";
+          idCount = 1;
+          populateGrid();
+          createHoverDiv();
+          mouseOverClass();
+        }
+      }
+      
+      // GRID POPULATOR FUNCTION
+      function newRow() {
+        let row = container.appendChild(document.createElement("div"));
+        row.className = "row";
+        row.id = idCount++;
+      }
+
+      function newDiv(x) {
+        let currentRow = document.querySelectorAll(".row");
+        currentRow[x].appendChild(document.createElement("div"));
+      }
+
+      function populateGrid() {
+        for (let i = 0; i < x; i++) {
+          newRow();
+          for (let j = 0; j < x; j++) {
+            newDiv([i]);
+          }
+        }
+      }
+
+      // INIT GRID
+      populateGrid();
+      createHoverDiv();
+
+      // HOVER STATE
+      function createHoverDiv() {
+        hoverDiv = document.querySelectorAll(".row div");
+      }
+      function updateClass(event) {
+        event.target.classList.add("black");
+      }
+      function mouseOverClass() {
+        hoverDiv.forEach((x) => {
+          x.addEventListener("mouseover", updateClass);
+        });
+      }
+      mouseOverClass();
+    </script>
+  </body>
+</html>
